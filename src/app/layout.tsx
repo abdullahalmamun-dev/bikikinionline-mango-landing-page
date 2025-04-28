@@ -20,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="bn">
       <body className={inter.className}>
+        <div className=''>
         <Header />
-        <main className='max-w-screen-xl mx-auto bg-white px-10'>
+        </div>
+        <main className='max-w-screen-xl mx-auto bg-white md:px-10'>
           {children}
         </main>
         {/* <Footer /> */}

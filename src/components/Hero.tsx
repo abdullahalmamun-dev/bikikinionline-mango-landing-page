@@ -8,10 +8,10 @@ export default function Hero() {
     <section className="py-16 bg-gradient-to-r from-yellow-50 to-yellow-100">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-green-800">
+          <h1 className="text-3xl text-center md:text-left md:text-5xl font-bold mb-6 text-green-800">
             বাংলাদেশের সেরা মিষ্টি আম!
           </h1>
-          <p className="text-xl mb-8 text-gray-700">
+          <p className="text-xl text-justify mb-8 text-gray-700">
             আমের সিজন এসে গেছে! বাংলাদেশের বিভিন্ন জাতের সেরা মানের আম এখন আপনার দরজায়। ফজলি, হিমসাগর, আম্রপালি, গোপালভোগ সহ আরও অনেক জাতের আম সরাসরি আপনার বাসায় ডেলিভারি।
           </p>
           <div className="mb-8">
@@ -19,11 +19,11 @@ export default function Hero() {
             <ul className="grid grid-cols-2 gap-2">
               <li className="flex items-center text-green-600">
                 <span className="mr-2 ">✓</span>
-                ফজলি
+                গোবিন্দভোগ 
               </li>
               <li className="flex items-center text-green-600">
                 <span className="mr-2 text-green-600">✓</span>
-                হিমসাগর
+                হিমসাগর 
               </li>
               <li className="flex items-center text-green-600">
                 <span className="mr-2 text-green-600">✓</span>
@@ -31,15 +31,15 @@ export default function Hero() {
               </li>
               <li className="flex items-center text-green-600">
                 <span className="mr-2 text-green-600">✓</span>
-                গোপালভোগ
+                হাড়িভাঙ্গা 
               </li>
               <li className="flex items-center text-green-600">
                 <span className="mr-2 text-green-600">✓</span>
-                লাঙ্গড়া
+                ল্যাংড়া 
               </li>
               <li className="flex items-center text-green-600">
                 <span className="mr-2 text-green-600">✓</span>
-                হাড়িভাঙ্গা
+                ফজলি
               </li>
             </ul>
           </div>
