@@ -1,5 +1,6 @@
 // components/Reviews.tsx
 import Image from 'next/image'
+import r1 from '../assets/review1.jpg'
 
 export default function Reviews() {
   return (

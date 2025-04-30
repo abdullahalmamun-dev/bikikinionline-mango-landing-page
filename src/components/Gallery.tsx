@@ -1,8 +1,8 @@
 // components/Gallery.tsx
 import Image from 'next/image'
-import g1 from '../../public/images/1.jpg'
-import g2 from '../../public/images/2.jpg'
-import g3 from '../../public/images/3.jpg'
+import g1 from '../assets/images/1.jpg'
+import g2 from '../assets/images/2.jpg'
+import g3 from '../assets/images/3.jpg'
 
 
 export default function Gallery() {

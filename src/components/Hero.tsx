@@ -1,7 +1,7 @@
 // components/Hero.tsx
 import Image from 'next/image'
 import Link from 'next/link'
-import mango from "../../public/assets/hero.jpg"
+import mango from "../assets/hero.jpg"
 
 export default function Hero() {
   return (
@@ -12,7 +12,7 @@ export default function Hero() {
             বাংলাদেশের সেরা মিষ্টি আম!
           </h1>
           <p className="text-xl text-justify mb-8 text-gray-700">
-            আমের সিজন এসে গেছে! বাংলাদেশের বিভিন্ন জাতের সেরা মানের আম এখন আপনার দরজায়। ফজলি, হিমসাগর, আম্রপালি, গোপালভোগ সহ আরও অনেক জাতের আম সরাসরি আপনার বাসায় ডেলিভারি।
+            আমের সিজন এসে গেছে! বাংলাদেশের বিভিন্ন জাতের সেরা মানের আম এখন আপনার দরজায়। গোবিন্দভোগ, হিমসাগর, আম্রপালি, হাড়িভাঙ্গা, ল্যাংড়া, ফজলি সহ আরও অনেক জাতের আম সরাসরি আপনার বাসায় ডেলিভারি।
           </p>
           <div className="mb-8">
             <p className="text-lg font-semibold mb-2 text-green-600">যে সব আম পাবেন আমাদের কাছে:</p>
@@ -47,7 +47,7 @@ export default function Hero() {
             <span className="font-bold text-green-600">২০,০০০+</span> গ্রাহকের কাছে আমরা আমাদের আম পৌঁছে দিয়েছি!
           </p>
           <Link href="#order" className="bg-green-600 text-white font-bold px-8 py-4 rounded-lg text-xl hover:bg-green-700 transition-colors">
-            অর্ডার করুন
+           প্রিঅর্ডার করুন
           </Link>
         </div>
         <div className="relative h-[400px] md:h-[500px]">

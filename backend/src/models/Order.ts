@@ -1,9 +1,6 @@
-// backend/src/models/Order.ts
 import mongoose from 'mongoose';
 
-export type Status = 'confirmed' | 'advanced' | 'delivering' | 'delivered' | 'failed' | 'rejected';
-
-// type Status = 'confirmed' | 'advanced' | 'delivering' | 'delivered' | 'failed' | 'rejected';
+export type Status = 'ordered' | 'confirmed' | 'advanced' | 'delivering' | 'delivered' | 'failed' | 'rejected';
 
 interface IStatusHistory {
   status: Status;
@@ -25,12 +22,10 @@ interface IOrder {
   deliveryArea: string;
   products: Array<{
     productId: mongoose.Types.ObjectId;
-    quantity: number;
-    price: number;
+    price: number; // Removed quantity
   }>;
   totalAmount: number;
   deliveryCharge: number;
-  codCharge: number;
   grandTotal: number;
   currentStatus: Status;
   statusHistory: IStatusHistory[];
@@ -50,23 +45,35 @@ const orderSchema = new mongoose.Schema<IOrder>({
   deliveryArea: { type: String, required: true },
   products: [{
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mango', required: true },
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true }
+    price: { type: Number, required: true } // Removed quantity
   }],
   totalAmount: { type: Number, required: true },
   deliveryCharge: { type: Number, required: true },
-  codCharge: { type: Number, required: true },
   grandTotal: { type: Number, required: true },
   currentStatus: {
     type: String,
-    enum: ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'],
-    default: 'confirmed'
+    enum: ['ordered', 'confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'],
+    default: 'ordered'
   },
   statusHistory: [{
-    status: { type: String, enum: ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'] },
+    status: { 
+      type: String, 
+      enum: ['ordered', 'confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'] 
+    },
     timestamp: { type: Date, default: Date.now },
     updatedBy: String
   }]
+});
+
+orderSchema.pre('save', function(next) {
+  if (this.isNew) {
+    this.statusHistory = [{
+      status: 'ordered',
+      timestamp: new Date(),
+      updatedBy: 'system'
+    }];
+  }
+  next();
 });
 
 export default mongoose.model<IOrder>('Order', orderSchema);
