@@ -1,7 +1,7 @@
 // components/MangoVarieties.tsx
 import Image from 'next/image'
-import fazli from '../assets/fazli.jpeg'
-import himsagar from '../assets/himsagar.webp'
+import fazli from '../../public/assets/fazli.jpeg'
+import himsagar from '../../public/assets/himsagar.webp'
 
 export default function MangoVarieties() {
   return (

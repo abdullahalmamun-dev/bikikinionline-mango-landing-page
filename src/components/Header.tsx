@@ -2,7 +2,7 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
-import logo from "../assets/logo.png"
+import logo from "../../public/assets/logo.png"
 import Image from 'next/image'
 
 

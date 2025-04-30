@@ -15,19 +15,19 @@ export default function Reviews() {
               name: 'শাহেনুর ইসলাম',
               location: 'ঢাকা',
               text: 'সেরা মানের আম পেয়েছি, ডেলিভারি সময়মতো হয়েছে',
-              img: '/images/reviews/1.jpg'
+              img: '/assets/review3.jpg'
             },
             {
               name: 'জসিম রায়হান',
               location: 'নারায়নগঞ্জ',
               text: 'আমের স্বাদ অতুলনীয়, নিয়মিত ক্রয় করব',
-              img: '/images/reviews/2.jpg'
+              img: '/assets/review2.jpg'
             },
             {
               name: 'সুমন আহমেদ',
               location: 'নরসিংদী',
               text: 'সরাসরি কৃষকের কাছ থেকে পাওয়ার সুবিধা অসাধারণ',
-              img: '/images/reviews/3.jpg'
+              img: '/assets/review1.jpg'
             }
           ].map((review, index) => (
             <div key={index} className="bg-white p-6 rounded-lg shadow-md">

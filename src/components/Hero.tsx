@@ -1,7 +1,7 @@
 // components/Hero.tsx
 import Image from 'next/image'
 import Link from 'next/link'
-import mango from "../assets/hero.jpg"
+import mango from "../../public/assets/hero.jpg"
 
 export default function Hero() {
   return (

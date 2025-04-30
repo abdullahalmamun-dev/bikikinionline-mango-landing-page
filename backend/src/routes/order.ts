@@ -1,23 +1,28 @@
 // backend/src/routes/order.ts
 import express from 'express';
-import Order from '../models/Order';
-import Mango from '../models/Mango';
+import { Request, Response } from 'express';
+import Order, { Status } from '../models/Order';
 
 const router = express.Router();
 
-// Create a new order
-router.post('/', async (req, res) => {
+// Create order
+router.post('/', async (req: Request, res: Response) => {
   try {
+    console.log('Incoming order data:', req.body); // Log incoming request
     const order = new Order(req.body);
-    await order.save();
-    res.status(201).json(order);
+    const savedOrder = await order.save();
+    console.log('Order saved successfully:', savedOrder._id);
+    res.status(201).json(savedOrder);
   } catch (error) {
-    res.status(500).json({ message: 'Error creating order', error });
+    console.error('Error creating order:', error);
+    res.status(500).json({ 
+      message: 'Error creating order',
+      // error: error.message // Only send error message in production
+    });
   }
 });
-
 // Get all orders
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const orders = await Order.find().populate('products.productId');
     res.json(orders);
@@ -25,5 +30,34 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Error fetching orders', error });
   }
 });
+
+// Update order status (Admin endpoint)
+router.put<{ id: string }, { status: Status; adminName?: string }>(
+  '/:id/status', 
+  async (req: Request<{ id: string }, { status: Status; adminName?: string }>, res: Response) => {
+    try {
+      const { status, adminName } = req.body;
+      const validStatuses: Status[] = ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'];
+
+      const order = await Order.findById(req.params.id);
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+
+      order.statusHistory.push({
+        status,
+        timestamp: new Date(),
+        updatedBy: adminName || 'admin'
+      });
+      
+      order.currentStatus = status;
+      await order.save();
+      
+      return res.json(order);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error updating status', error });
+    }
+  }
+);
 
 export default router;

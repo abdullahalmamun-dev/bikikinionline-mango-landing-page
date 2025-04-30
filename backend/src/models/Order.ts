@@ -1,83 +1,72 @@
 // backend/src/models/Order.ts
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-interface IOrderProduct {
-  productId: mongoose.Types.ObjectId;
-  quantity: number;
-  price: number;
+export type Status = 'confirmed' | 'advanced' | 'delivering' | 'delivered' | 'failed' | 'rejected';
+
+// type Status = 'confirmed' | 'advanced' | 'delivering' | 'delivered' | 'failed' | 'rejected';
+
+interface IStatusHistory {
+  status: Status;
+  timestamp: Date;
+  updatedBy: string;
 }
 
-export interface IOrder extends Document {
+interface IOrder {
   customerName: string;
   phoneNumber: string;
-  address: string;
+  address: {
+    house: string;
+    road?: string;
+    area: string;
+    policeStation: string;
+    district: string;
+    division: string;
+  };
   deliveryArea: string;
-  products: IOrderProduct[];
+  products: Array<{
+    productId: mongoose.Types.ObjectId;
+    quantity: number;
+    price: number;
+  }>;
   totalAmount: number;
   deliveryCharge: number;
   codCharge: number;
   grandTotal: number;
-  orderDate: Date;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  currentStatus: Status;
+  statusHistory: IStatusHistory[];
 }
 
-const OrderSchema = new Schema<IOrder>({
-  customerName: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
+const orderSchema = new mongoose.Schema<IOrder>({
+  customerName: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
   address: {
-    type: String,
-    required: true,
+    house: { type: String, required: true },
+    road: String,
+    area: { type: String, required: true },
+    policeStation: { type: String, required: true },
+    district: { type: String, required: true },
+    division: { type: String, required: true }
   },
-  deliveryArea: {
-    type: String,
-    required: true,
-  },
+  deliveryArea: { type: String, required: true },
   products: [{
-    productId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Mango',
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mango', required: true },
+    quantity: { type: Number, required: true },
+    price: { type: Number, required: true }
   }],
-  totalAmount: {
-    type: Number,
-    required: true,
-  },
-  deliveryCharge: {
-    type: Number,
-    required: true,
-  },
-  codCharge: {
-    type: Number,
-    required: true,
-  },
-  grandTotal: {
-    type: Number,
-    required: true,
-  },
-  orderDate: {
-    type: Date,
-    default: Date.now,
-  },
-  status: {
+  totalAmount: { type: Number, required: true },
+  deliveryCharge: { type: Number, required: true },
+  codCharge: { type: Number, required: true },
+  grandTotal: { type: Number, required: true },
+  currentStatus: {
     type: String,
-    enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
-    default: 'pending',
+    enum: ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'],
+    default: 'confirmed'
   },
-}, { timestamps: true });
+  statusHistory: [{
+    status: { type: String, enum: ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'] },
+    timestamp: { type: Date, default: Date.now },
+    updatedBy: String
+  }]
+});
 
-export default mongoose.model<IOrder>('Order', OrderSchema);
+export default mongoose.model<IOrder>('Order', orderSchema);
