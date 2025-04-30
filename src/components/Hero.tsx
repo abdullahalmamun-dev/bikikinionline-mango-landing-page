@@ -46,9 +46,11 @@ export default function Hero() {
           <p className="text-lg mb-8 text-gray-600">
             <span className="font-bold text-green-600">২০,০০০+</span> গ্রাহকের কাছে আমরা আমাদের আম পৌঁছে দিয়েছি!
           </p>
-          <Link href="#order" className="bg-green-600 text-white font-bold px-8 py-4 rounded-lg text-xl hover:bg-green-700 transition-colors">
-           প্রিঅর্ডার করুন
+<div className='md:block flex justify-center'>
+<Link href="#order" className="bg-green-600  text-white font-bold px-8 py-4 rounded-lg text-xl hover:bg-green-700 transition-colors">
+           অর্ডার করুন
           </Link>
+</div>
         </div>
         <div className="relative h-[400px] md:h-[500px]">
           <Image 

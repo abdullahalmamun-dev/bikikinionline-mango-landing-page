@@ -16,7 +16,7 @@ interface MangoFormData {
 export default function AddMangoForm() {
   const [formData, setFormData] = useState<MangoFormData>({
     name: '',
-    sizes: [{ weight: '১ কেজি', price: 0 }]
+    sizes: [{ weight: '১০ কেজি', price: 0 }]
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

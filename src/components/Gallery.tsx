@@ -3,6 +3,9 @@ import Image from 'next/image'
 import g1 from '../assets/images/1.jpg'
 import g2 from '../assets/images/2.jpg'
 import g3 from '../assets/images/3.jpg'
+import g4 from '../assets/images/4.jpg'
+import g5 from '../assets/images/5.jpg'
+import g6 from '../assets/images/6.jpg'
 
 
 export default function Gallery() {
@@ -40,7 +43,7 @@ export default function Gallery() {
             </div>
             <div  className="relative aspect-square rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
               <Image
-                src={g1}
+                src={g4}
                 alt={`Gallery 1`}
                 fill
                 className="object-cover"
@@ -48,7 +51,7 @@ export default function Gallery() {
             </div>
             <div  className="relative aspect-square rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
               <Image
-                src={g1}
+                src={g5}
                 alt={`Gallery 1`}
                 fill
                 className="object-cover"
@@ -56,7 +59,7 @@ export default function Gallery() {
             </div>
             <div  className="relative aspect-square rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
               <Image
-                src={g1}
+                src={g6}
                 alt={`Gallery 1`}
                 fill
                 className="object-cover"

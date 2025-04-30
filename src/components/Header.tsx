@@ -16,7 +16,7 @@ export default function Header() {
 
   const navItems = [
     { name: 'পরিচিতি', href: '#' },
-    { name: 'পার্থক্য', href: '#varieties' },
+    { name: 'বিশেষত্ব', href: '#varieties' },
     { name: 'ফিচারস', href: '#features' },
     { name: 'রিভিউ', href: '#reviews' },
     { name: 'জিজ্ঞাসা', href: '#faq' },

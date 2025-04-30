@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --swal2-bangla-font: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+
 }
 
 @theme inline {
@@ -23,4 +25,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+.bangla-font {
+  font-family: var(--swal2-bangla-font) !important;
+}
+
+.bangla-title {
+  font-size: 1.5rem !important;
+  line-height: 1.4 !important;
 }

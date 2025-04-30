@@ -1,5 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
+
 
 interface SizePrice {
   weight: string
@@ -147,13 +152,15 @@ const handleSubmit = async (e: React.FormEvent) => {
       },
       deliveryArea: formData.area,
       products: [{
-        productId: selectedProduct._id,
-        price: formData.selectedSize.price
+        name: selectedProduct.name,
+        weight: formData.selectedSize.weight, // Make sure weight is included
+        price: formData.selectedSize.price,
+        quantity: 1
       }],
-      totalAmount,
-      deliveryCharge,
-      grandTotal
-    }
+      subtotal: totalAmount,
+      deliveryCharge: deliveryCharge,
+      grandTotal: grandTotal
+    };
 
     const response = await fetch('http://localhost:5000/api/orders', {
       method: 'POST',
@@ -191,8 +198,25 @@ const handleSubmit = async (e: React.FormEvent) => {
       area: 'dhaka'
     })
 
-    alert('Order submitted successfully!')
-
+    MySwal.fire({
+      title: '<strong>ধন্যবাদ!</strong>',
+      html: '<div style="color: #1a5632; font-size: 1.1rem">আপনার অর্ডার সফলভাবে জমা হয়েছে। আমাদের প্রতিনিধি শীঘ্রই আপনার সাথে যোগাযোগ করবে</div>',
+      icon: 'success',
+      confirmButtonText: 'ঠিক আছে',
+      confirmButtonColor: '#16a34a',
+      customClass: {
+        popup: 'bangla-font',
+        title: 'bangla-title'
+      },
+      showClass: {
+        popup: 'swal2-show',
+        backdrop: 'swal2-backdrop-show'
+      },
+      hideClass: {
+        popup: 'swal2-hide',
+        backdrop: 'swal2-backdrop-hide'
+      }
+    })
   } catch (err) {
     const error = err instanceof Error ? err : new Error('Unknown error')
     setError(`Order failed: ${error.message}`)

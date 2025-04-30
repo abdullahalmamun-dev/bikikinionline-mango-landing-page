@@ -8,7 +8,16 @@ interface IStatusHistory {
   updatedBy: string;
 }
 
+interface IOrderProduct {
+  name: string;
+  weight: string;
+  price: number;
+  quantity: number;
+  total: number;
+}
+
 interface IOrder {
+  orderNumber: string;
   customerName: string;
   phoneNumber: string;
   address: {
@@ -20,11 +29,8 @@ interface IOrder {
     division: string;
   };
   deliveryArea: string;
-  products: Array<{
-    productId: mongoose.Types.ObjectId;
-    price: number; // Removed quantity
-  }>;
-  totalAmount: number;
+  products: IOrderProduct[];
+  subtotal: number;
   deliveryCharge: number;
   grandTotal: number;
   currentStatus: Status;
@@ -32,6 +38,11 @@ interface IOrder {
 }
 
 const orderSchema = new mongoose.Schema<IOrder>({
+  orderNumber: { 
+    type: String, 
+    required: true, 
+    unique: true 
+  },
   customerName: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   address: {
@@ -44,10 +55,13 @@ const orderSchema = new mongoose.Schema<IOrder>({
   },
   deliveryArea: { type: String, required: true },
   products: [{
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mango', required: true },
-    price: { type: Number, required: true } // Removed quantity
+    name: { type: String, required: true },
+    weight: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+    total: { type: Number, required: true }
   }],
-  totalAmount: { type: Number, required: true },
+  subtotal: { type: Number, required: true },
   deliveryCharge: { type: Number, required: true },
   grandTotal: { type: Number, required: true },
   currentStatus: {
@@ -65,6 +79,17 @@ const orderSchema = new mongoose.Schema<IOrder>({
   }]
 });
 
+// Generate order number before validation
+orderSchema.pre('validate', function(next) {
+  if (this.isNew && !this.orderNumber) {
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(1000 + Math.random() * 9000);
+    this.orderNumber = `ORD-${timestamp}-${random}`;
+  }
+  next();
+});
+
+// Initialize status history before saving
 orderSchema.pre('save', function(next) {
   if (this.isNew) {
     this.statusHistory = [{

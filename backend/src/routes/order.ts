@@ -1,141 +1,115 @@
 // backend/src/routes/order.ts
-import express from 'express'
-import { Request, Response } from 'express'
-import Order, { Status } from '../models/Order'
-import mongoose from 'mongoose'
+import express from 'express';
+import { Request, Response } from 'express';
+import Order, { Status } from '../models/Order';
+import mongoose from 'mongoose';
 
-const router = express.Router()
+const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    console.log('Incoming order:', JSON.stringify(req.body, null, 2))
-    
+    const { customerName, phoneNumber, address, products, deliveryArea } = req.body;
+
     // Validate required fields
-    const requiredFields = [
-      'customerName', 'phoneNumber', 'address', 
-      'products', 'totalAmount', 'deliveryCharge', 'grandTotal'
-    ]
-    
-    const missingFields = requiredFields.filter(field => !req.body[field])
+    const requiredFields = ['customerName', 'phoneNumber', 'address', 'products', 'deliveryArea'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
-        error: `Missing required fields: ${missingFields.join(', ')}`
-      })
-    }
-
-    // Validate address structure
-    const addressFields = ['house', 'area', 'policeStation', 'district', 'division']
-    const missingAddressFields = addressFields.filter(field => !req.body.address[field])
-    if (missingAddressFields.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: `Incomplete address: ${missingAddressFields.join(', ')}`
-      })
+        error: `অনুগ্রহ করে নিম্নলিখিত ফিল্ডগুলি পূরণ করুন: ${missingFields.join(', ')}`
+      });
     }
 
     // Validate products array
-    if (!Array.isArray(req.body.products) || req.body.products.length === 0) {
+    if (!Array.isArray(products) || products.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid products format'
-      })
+        error: 'অনুগ্রহ করে অন্তত একটি পণ্য নির্বাচন করুন'
+      });
     }
 
-    // Validate numerical fields
-    const numericalFields = ['totalAmount', 'deliveryCharge', 'grandTotal']
-    const invalidNumbers = numericalFields.filter(field => 
-      typeof req.body[field] !== 'number' || isNaN(req.body[field])
-    )
-    
-    if (invalidNumbers.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid numerical values: ${invalidNumbers.join(', ')}`
-      })
-    }
+    // Process products
+    const processedProducts = products.map((p: any) => ({
+      name: p.name,
+      weight: p.weight,
+      price: Number(p.price),
+      quantity: Number(p.quantity) || 1,
+      total: Number(p.price) * (Number(p.quantity) || 1)
+    }));
 
-    // Create order document
+    // Calculate totals
+    const subtotal = processedProducts.reduce((sum: number, p) => sum + p.total, 0);
+    const deliveryCharge = deliveryArea === 'dhaka' ? 80 : 150;
+    const grandTotal = subtotal + deliveryCharge;
+
+    // Create order
     const order = new Order({
-      customerName: req.body.customerName.trim(),
-      phoneNumber: req.body.phoneNumber.trim(),
+      customerName: customerName.trim(),
+      phoneNumber: phoneNumber.trim(),
       address: {
-        house: req.body.address.house.trim(),
-        road: req.body.address.road?.trim(),
-        area: req.body.address.area.trim(),
-        policeStation: req.body.address.policeStation.trim(),
-        district: req.body.address.district.trim(),
-        division: req.body.address.division.trim()
+        house: address.house.trim(),
+        road: address.road?.trim(),
+        area: address.area.trim(),
+        policeStation: address.policeStation.trim(),
+        district: address.district.trim(),
+        division: address.division.trim()
       },
-      deliveryArea: req.body.deliveryArea,
-      products: req.body.products.map((p: any) => ({
-        productId: new mongoose.Types.ObjectId(p.productId),
-        price: p.price
-      })),
-      totalAmount: req.body.totalAmount,
-      deliveryCharge: req.body.deliveryCharge,
-      grandTotal: req.body.grandTotal,
+      deliveryArea,
+      products: processedProducts,
+      subtotal,
+      deliveryCharge,
+      grandTotal,
       currentStatus: 'ordered' as Status
-    })
+    });
 
-    const savedOrder = await order.save()
+    const savedOrder = await order.save();
     
     res.status(201).json({
       success: true,
-      data: await Order.populate(savedOrder, { path: 'products.productId' })
-    })
+      data: savedOrder
+    });
 
   } catch (error) {
-    console.error('Order creation error:', error)
+    console.error('Order creation error:', error);
     
-    // Handle validation errors
     if (error instanceof mongoose.Error.ValidationError) {
-      const errors = Object.values(error.errors).map(e => ({
-        field: e.path,
-        message: e.message
-      }))
-      
+      const errors = Object.values(error.errors).map(e => e.message);
       return res.status(400).json({
         success: false,
-        error: 'Validation failed',
+        error: 'ভ্যালিডেশন ব্যর্থ হয়েছে',
         details: errors
-      })
+      });
     }
 
-    // Handle cast errors
-    if (error instanceof mongoose.Error.CastError) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid format for field: ${error.path}`
-      })
-    }
-
-    // Generic error response
     res.status(500).json({
       success: false,
-      error: 'Internal server error',
-      // details: error.message
-    })
+      error: error instanceof Error ? error.message : 'অভ্যন্তরীণ সার্ভার ত্রুটি'
+    });
   }
-})
+});
 
-// Rest of the routes remain same...
 
 
 
 
 // Get all orders
+// Get all orders
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find().populate('products.productId');
-    res.json(orders);
+    const orders = await Order.find();
+    res.json({
+      success: true,
+      data: orders // Ensure response has consistent structure
+    });
   } catch (error) {
     res.status(500).json({ 
-      message: 'Error fetching orders',
+      success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 });
+
+
 
 // Update order status (Admin endpoint)
 router.put<{ id: string }, any, { status: Exclude<Status, 'ordered'>; adminName?: string }>(
