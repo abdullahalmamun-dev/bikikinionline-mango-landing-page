@@ -7,6 +7,7 @@ import Reviews from '../components/Reviews'
 import FAQ from '../components/FAQ'
 import Gallery from '../components/Gallery'
 import OrderForm from '@/components/OrderForm'
+import Contact from '@/components/Contact'
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Reviews />
       <FAQ />
       <Gallery />
+      <Contact></Contact>
       <OrderForm />
     </>
   )

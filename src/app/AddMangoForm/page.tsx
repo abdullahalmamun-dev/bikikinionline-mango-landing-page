@@ -37,7 +37,7 @@ export default function AddMangoForm() {
         throw new Error('সব সাইজের জন্য বৈধ দাম লিখুন')
       }
 
-      const response = await fetch('http://localhost:5000/api/mangoes', {
+      const response = await fetch('https://xw0go80kwsgggkg40ooos8gw.92.112.181.229.sslip.io/api/mangoes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

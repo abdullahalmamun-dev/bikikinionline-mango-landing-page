@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/fonts.js", "src/utils/fonts.js", "backend/src/index.js", "backend/src/routes/mango.js", "backend/src/models/Mango.js", "backend/src/routes/order.js", "backend/src/routes/order.js", "backend/src/models/Order.js"],
   "exclude": ["node_modules"]
 }

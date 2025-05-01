@@ -81,7 +81,7 @@ export default function OrderForm() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/mangoes')
+        const response = await fetch('https://xw0go80kwsgggkg40ooos8gw.92.112.181.229.sslip.io/api/mangoes')
         if (!response.ok) {
           const errorData = await response.text()
           throw new Error(errorData || 'Failed to fetch products')
@@ -162,7 +162,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       grandTotal: grandTotal
     };
 
-    const response = await fetch('http://localhost:5000/api/orders', {
+    const response = await fetch('https://xw0go80kwsgggkg40ooos8gw.92.112.181.229.sslip.io/api/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
