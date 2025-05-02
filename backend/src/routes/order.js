@@ -12,9 +12,7 @@ const EventRequest = bizSdk.EventRequest
 const UserData = bizSdk.UserData
 const CustomData = bizSdk.CustomData
 
-const accessToken = process.env.FB_ACCESS_TOKEN
-const pixelId = process.env.FB_PIXEL_ID
-bizSdk.FacebookAdsApi.init(accessToken)
+const pixelId = '1216660336852015'
 
 // Hash function for PII data
 function hashValue(value) {
@@ -60,7 +58,7 @@ router.post('/', async (req, res) => {
 
     // Calculate totals
     const subtotal = processedProducts.reduce((sum, p) => sum + p.total, 0);
-    const deliveryCharge = deliveryArea === 'dhaka' ? 80 : 150;
+    const deliveryCharge = deliveryArea === 'dhaka' ? 100 : 150;
     const grandTotal = subtotal + deliveryCharge;
 
     // Create order

@@ -127,7 +127,7 @@ export default function OrderForm() {
   const selectedProduct = products.find(p => p._id === formData.product)
   const selectedSizePrice = formData.selectedSize?.price || 0
 const totalAmount = selectedSizePrice // Removed quantity multiplication
-const deliveryCharge = formData.area === 'dhaka' ? 80 : 150
+const deliveryCharge = formData.area === 'dhaka' ? 100 : 150
 const grandTotal = Number((totalAmount + deliveryCharge).toFixed(2))
 
 const handleSubmit = async (e: React.FormEvent) => {
@@ -450,7 +450,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                     className="h-4 w-4 text-green-600"
                   />
-                  ঢাকা (৮০ টাকা ডেলিভারি চার্জ)
+                  ঢাকা (১০০ টাকা ডেলিভারি চার্জ)
                 </label>
                 <label className="flex items-center gap-2">
                   <input
