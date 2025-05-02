@@ -441,9 +441,13 @@ export default function ControlMangoOrders() {
                 {[
                   'ordered',
                   'confirmed',
+                  'advanced',
                   'delivering',
                   'delivered',
-                  'cancelled'
+                  'failed',
+                  'rejected'
+
+
                 ].map((status) => (
                   <option key={status} value={status}>
                     {status.charAt(0).toUpperCase() + status.slice(1)}
