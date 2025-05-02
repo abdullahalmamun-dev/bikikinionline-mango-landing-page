@@ -265,15 +265,40 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">মোবাইল নম্বর</label>
-              <input
-                type="tel"
-                className="w-full p-3 border rounded-lg"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                required
-              />
-            </div>
+  <label className="block text-sm font-medium mb-2">মোবাইল নম্বর</label>
+  <div className="relative">
+    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <span className="text-gray-500">+880</span>
+    </div>
+    <input
+      type="tel"
+      className="w-full pl-16 p-3 border rounded-lg"
+      value={formData.phone.replace(/^\+880/, '')}  // Remove prefix for display
+      onChange={(e) => {
+        // Allow only numbers and limit to 10 digits (after +880)
+        const numbers = e.target.value.replace(/\D/g, '').slice(0, 10);
+        const fullNumber = `+880${numbers}`;
+        setFormData({ ...formData, phone: fullNumber });
+      }}
+      onBlur={(e) => {
+        // Final validation check
+        const isValid = /^\+8801[3-9]\d{8}$/.test(formData.phone);
+        if (!isValid) {
+          e.target.setCustomValidity('অবশ্যই একটি বৈধ বাংলাদেশী মোবাইল নম্বর হতে হবে');
+        } else {
+          e.target.setCustomValidity('');
+        }
+      }}
+      pattern="^1[3-9]\d{8}$"  // Pattern for the remaining 10 digits
+      required
+      placeholder="1712 345678"
+    />
+  </div>
+  <p className="text-sm text-gray-500 mt-1">
+    উদাহরণ: +8801712345678
+  </p>
+</div>
+
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-green-800">ঠিকানা বিবরণ</h3>

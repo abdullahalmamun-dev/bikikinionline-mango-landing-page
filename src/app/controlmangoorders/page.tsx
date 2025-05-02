@@ -241,7 +241,7 @@ export default function ControlMangoOrders() {
                   <p className="mt-1 text-sm">{formatCurrency(selectedOrder.deliveryCharge)}</p>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium font-semibold">Grand Total</label>
+                  <label className="block text-sm font-semibold">Grand Total</label>
                   <p className="mt-1 text-lg font-bold">{formatCurrency(selectedOrder.grandTotal)}</p>
                 </div>
               </div>
