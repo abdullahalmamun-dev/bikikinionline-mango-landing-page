@@ -41,28 +41,64 @@ interface Order {
 
 export default function ControlMangoOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(30);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    const results = orders.filter(order =>
+      order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredOrders(results);
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [searchTerm, orders]);
 
   const fetchOrders = async () => {
     try {
       const response = await fetch("https://xw0go80kwsgggkg40ooos8gw.92.112.181.229.sslip.io/api/orders");
       if (!response.ok) throw new Error("Failed to fetch orders");
       const { data } = await response.json();
-      setOrders(Array.isArray(data) ? data : []);
+      
+      // Sort orders by date (oldest first)
+      const sortedData = Array.isArray(data) 
+        ? data.sort((a, b) => 
+            new Date(a.statusHistory[0].timestamp).getTime() - 
+            new Date(b.statusHistory[0].timestamp).getTime()
+          )
+        : [];
+      
+      setOrders(sortedData);
+      setFilteredOrders(sortedData);
     } catch (err) {
       setError("Failed to load orders");
       setOrders([]);
+      setFilteredOrders([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const indexOfLastOrder = currentPage * rowsPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - rowsPerPage;
+  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(filteredOrders.length / rowsPerPage);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const handleUpdateOrder = async (e: React.FormEvent) => {
@@ -130,10 +166,22 @@ export default function ControlMangoOrders() {
     <div className="p-6 text-gray-800">
       <h1 className="text-2xl font-bold mb-6">Order Management System</h1>
 
+       {/* Search Bar */}
+       <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by order number..."
+          className="w-full p-3 border rounded-lg"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </div>
+
       <div className="overflow-x-auto rounded-lg border">
         <table className="min-w-full">
           <thead className="bg-gray-50">
             <tr>
+            <th className="py-3 px-4 text-left text-sm font-semibold">Serial No.</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Order #</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Customer</th>
               <th className="py-3 px-4 text-left text-sm font-semibold">Phone</th>
@@ -143,8 +191,12 @@ export default function ControlMangoOrders() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {orders.map((order) => (
+            {currentOrders.map((order, index) => (
               <tr key={order._id}>
+                {/* Keep table row contents the same */}
+                <td className="py-3 px-4 text-sm">
+        {(currentPage - 1) * rowsPerPage + index + 1}
+      </td>
                 <td className="py-3 px-4 text-sm">{order.orderNumber}</td>
                 <td className="py-3 px-4 text-sm">{order.customerName}</td>
                 <td className="py-3 px-4 text-sm">{order.phoneNumber}</td>
@@ -174,6 +226,30 @@ export default function ControlMangoOrders() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex items-center justify-between mt-4">
+        <div>
+          Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, filteredOrders.length)} of {filteredOrders.length} entries
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Detail Modal */}
