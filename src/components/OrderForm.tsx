@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import FacebookPixelTracker from './FacebookPixelTracker'
 
 const MySwal = withReactContent(Swal)
 
@@ -251,8 +252,9 @@ const handleSubmit = async (e: React.FormEvent) => {
               {error}
             </div>
           )}
+          <FacebookPixelTracker />
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form id="order-form" onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">আপনার নাম</label>
               <input
