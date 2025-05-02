@@ -79,6 +79,7 @@ export default function ControlMangoOrders() {
       
       setOrders(sortedData);
       setFilteredOrders(sortedData);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Failed to load orders");
       setOrders([]);
@@ -130,6 +131,7 @@ export default function ControlMangoOrders() {
         icon: "success",
         confirmButtonText: "OK",
       });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       MySwal.fire({
         title: "Error!",
@@ -147,6 +149,20 @@ export default function ControlMangoOrders() {
       minimumFractionDigits: 0,
     }).format(amount);
   };
+
+  const updateProduct = (index: number, field: string, value: string | number) => {
+    if (!selectedOrder) return;
+    
+    const updatedProducts = selectedOrder.products.map((product, i) => 
+      i === index ? { ...product, [field]: value } : product
+    );
+    
+    setSelectedOrder({
+      ...selectedOrder,
+      products: updatedProducts
+    });
+  };
+  
 
   const formatAddress = (address: Order['address']): string => {
     return [
