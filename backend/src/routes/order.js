@@ -100,34 +100,73 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.put('/:id/status', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const { status, adminName } = req.body;
-    const validStatuses = ['confirmed', 'advanced', 'delivering', 'delivered', 'failed', 'rejected'];
+    const { id } = req.params;
+    const updateData = req.body;
 
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ message: 'Invalid status' });
+    // Validate order exists
+    const existingOrder = await Order.findById(id);
+    if (!existingOrder) {
+      return res.status(404).json({
+        success: false,
+        error: 'Order not found'
+      });
     }
 
-    const order = await Order.findById(req.params.id);
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+    // Process products if updated
+    if (updateData.products) {
+      updateData.products = updateData.products.map(p => ({
+        name: p.name,
+        weight: p.weight,
+        price: Number(p.price),
+        quantity: Number(p.quantity) || 1,
+        total: Number(p.price) * (Number(p.quantity) || 1)
+      }));
     }
 
-    order.statusHistory.push({
-      status,
-      timestamp: new Date(),
-      updatedBy: adminName || 'admin'
+    // Recalculate totals if products or delivery area changes
+    if (updateData.products || updateData.deliveryArea) {
+      const products = updateData.products || existingOrder.products;
+      const deliveryArea = updateData.deliveryArea || existingOrder.deliveryArea;
+      
+      updateData.subtotal = products.reduce((sum, p) => sum + p.total, 0);
+      updateData.deliveryCharge = deliveryArea === 'dhaka' ? 80 : 150;
+      updateData.grandTotal = updateData.subtotal + updateData.deliveryCharge;
+    }
+
+    // Update order with validation
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+        overwrite: false,
+        context: 'query'
+      }
+    );
+
+    res.json({
+      success: true,
+      data: updatedOrder
     });
-    
-    order.currentStatus = status;
-    await order.save();
-    
-    return res.json(order);
+
   } catch (error) {
-    return res.status(500).json({ 
-      message: 'Error updating status',
-      error: error.message || 'Unknown error'
+    console.error('Order update error:', error);
+    
+    if (error instanceof mongoose.Error.ValidationError) {
+      const errors = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: errors
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Internal server error'
     });
   }
 });
