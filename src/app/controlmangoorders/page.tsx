@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Image from "next/image";
+import logo from '../logo.png'
 
 const MySwal = withReactContent(Swal);
 
@@ -163,7 +165,6 @@ export default function ControlMangoOrders() {
     });
   };
   
-
   const formatAddress = (address: Order['address']): string => {
     return [
       address.house,
@@ -209,10 +210,9 @@ export default function ControlMangoOrders() {
           <tbody className="divide-y divide-gray-200 bg-white">
             {currentOrders.map((order, index) => (
               <tr key={order._id}>
-                {/* Keep table row contents the same */}
                 <td className="py-3 px-4 text-sm">
-        {(currentPage - 1) * rowsPerPage + index + 1}
-      </td>
+                  {(currentPage - 1) * rowsPerPage + index + 1}
+                </td>
                 <td className="py-3 px-4 text-sm">{order.orderNumber}</td>
                 <td className="py-3 px-4 text-sm">{order.customerName}</td>
                 <td className="py-3 px-4 text-sm">{order.phoneNumber}</td>
@@ -268,88 +268,163 @@ export default function ControlMangoOrders() {
         </div>
       </div>
 
-      {/* Detail Modal */}
+      {/* Enhanced Detail Modal */}
       {detailModalOpen && selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-            <h2 className="text-xl font-bold mb-4">Order Details</h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+        <div className="fixed inset-0 bg-white bg-opacity-60 flex items-center justify-center p-4 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl overflow-hidden">
+            {/* Company Header Section */}
+            <div className="px-2 py-2 bg-gradient-to-r from-purple-600 to-green-700 p-2 text-white">
+              <div className="flex items-center">
+                <Image 
+                  src={logo} 
+                  alt="BIKIKINI ONLINE" 
+                  className="h-16 w-auto mr-4 bg-white p-2 rounded-lg" 
+                />
                 <div>
-                  <label className="block text-sm font-medium">Order Number</label>
-                  <p className="mt-1 text-sm">{selectedOrder.orderNumber}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Order Date</label>
-                  <p className="mt-1 text-sm">{new Date().toLocaleDateString()}</p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium">Customer Information</label>
-                <div className="mt-1 text-sm space-y-1">
-                  <p>Name: {selectedOrder.customerName}</p>
-                  <p>Phone: {selectedOrder.phoneNumber}</p>
-                  <p>Address: {formatAddress(selectedOrder.address)}</p>
-                  <p>Delivery Area: {selectedOrder.deliveryArea}</p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium">Products</label>
-                <table className="min-w-full mt-2">
-                  <thead>
-                    <tr>
-                      <th className="py-2 px-4 text-left border-b">S/N</th>
-                      <th className="py-2 px-4 text-left border-b">Product</th>
-                      <th className="py-2 px-4 text-left border-b">Weight</th>
-                      <th className="py-2 px-4 text-left border-b">Price</th>
-                      <th className="py-2 px-4 text-left border-b">Qty</th>
-                      <th className="py-2 px-4 text-left border-b">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedOrder.products.map((product, index) => (
-                      <tr key={index}>
-                        <td className="py-2 px-4">{index}</td>
-                        <td className="py-2 px-4">{product.name}</td>
-                        <td className="py-2 px-4">{product.weight}</td>
-                        <td className="py-2 px-4">{formatCurrency(product.price)}</td>
-                        <td className="py-2 px-4">{product.quantity}</td>
-                        <td className="py-2 px-4">{formatCurrency(product.total)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                <div>
-                  <label className="block text-sm font-medium">Subtotal</label>
-                  <p className="mt-1 text-sm">{formatCurrency(selectedOrder.subtotal)}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">Delivery Charge</label>
-                  <p className="mt-1 text-sm">{formatCurrency(selectedOrder.deliveryCharge)}</p>
-                </div>
-                <div className="col-span-2">
-                  <label className="block text-sm font-semibold">Grand Total</label>
-                  <p className="mt-1 text-lg font-bold">{formatCurrency(selectedOrder.grandTotal)}</p>
+                  <h1 className="text-2xl font-bold">BIKIKINI ONLINE</h1>
+                  <p className="text-sm opacity-90">House 95, Road 13, Nabinagar Housing, Mohammadpur, Dhaka 1207</p>
+                  <p className="text-sm opacity-90">Phone: +880 1333-318076 | +880 1333-317720 | +880 1333-317719</p>
                 </div>
               </div>
             </div>
-
-            <button
-              onClick={() => setDetailModalOpen(false)}
-              className="mt-6 bg-gray-500 text-white px-4 py-2 rounded float-right"
-            >
-              Close
-            </button>
+            
+            <div className=" p-2 bg-gray-50">
+              <div className="mb-2 p-2">
+                <div className="inline-block rounded-t-lg bg-green-600 text-white px-4 py-2 text-lg font-semibold">
+                  Order #{selectedOrder.orderNumber}
+                </div>
+                <div className="border border-indigo-200 rounded-b-lg rounded-tr-lg bg-white p-5 shadow-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Order Information */}
+                    <div>
+                      <h3 className="text-md font-semibold text-green-800 mb-3 pb-2 border-b border-indigo-100">Order Information</h3>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Date:</span>
+                          <span className="font-medium">{new Date().toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Status:</span>
+                          <span className="font-medium capitalize">
+                            <span className={`px-2 py-1 rounded-full text-xs ${
+                              selectedOrder.currentStatus === 'delivered' ? 'bg-green-100 text-green-800' : 
+                              selectedOrder.currentStatus === 'confirmed' ? 'bg-blue-100 text-blue-800' :
+                              selectedOrder.currentStatus === 'ordered' ? 'bg-yellow-100 text-yellow-800' : 
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {selectedOrder.currentStatus}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Customer Information */}
+                    <div className="px-2 py-2">
+                      <h3 className="text-md  font-semibold text-green-800  border-b border-indigo-100">Customer Details</h3>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Name:</span>
+                          <span className="font-medium">{selectedOrder.customerName}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Phone:</span>
+                          <span className="font-medium">{selectedOrder.phoneNumber}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Delivery Area:</span>
+                          <span className="font-medium">{selectedOrder.deliveryArea}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Address Information */}
+                  <div className="px-2 py-2">
+                    <h3 className="text-md font-semibold text-green-800  border-b border-indigo-100">Delivery Address</h3>
+                    <div className="bg-indigo-50 px-3 rounded-lg border border-indigo-100">
+                      <p className="text-gray-700">{formatAddress(selectedOrder.address)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Products Section */}
+              <div className="px-2 py-2">
+                <div className="inline-block rounded-t-lg bg-green-600 text-white px-4  text-lg font-semibold">
+                  Order Items
+                </div>
+                <div className="border border-indigo-200 rounded-b-lg rounded-tr-lg bg-white p-5 shadow-sm">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white">
+                      <thead className="bg-indigo-50">
+                        <tr>
+                          <th className="py-1 px-4 text-left text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">S/N</th>
+                          <th className="py-1 px-4 text-left text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">Product</th>
+                          <th className="py-1 px-4 text-left text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">Weight</th>
+                          <th className="py-1 px-4 text-left text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">Price</th>
+                          <th className="py-1 px-4 text-left text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">Qty</th>
+                          <th className="py-1 px-4 text-right text-xs font-semibold text-green-700 uppercase tracking-wider border-b border-indigo-100">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-green-100">
+                        {selectedOrder.products.map((product, index) => (
+                          <tr key={index} className="hover:bg-green-50">
+                            <td className="py-1 px-4 text-sm text-gray-700">{index + 1}</td>
+                            <td className="py-1 px-4 text-sm font-medium text-green-800">{product.name}</td>
+                            <td className="py-1 px-4 text-sm text-gray-700">{product.weight}</td>
+                            <td className="py-1 px-4 text-sm text-gray-700">{formatCurrency(product.price)}</td>
+                            <td className="py-1 px-4 text-sm text-gray-700">{product.quantity}</td>
+                            <td className="py-1 px-4 text-sm font-medium text-indigo-900 text-right">{formatCurrency(product.total)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Totals Section */}
+              <div className="px-2 py-2">
+                <div className="inline-block rounded-t-lg bg-green-600 text-white px-4 text-lg font-semibold">
+                  Amount Summary
+                </div>
+                <div className="border px-4 py-2 border-indigo-200 rounded-b-lg rounded-tr-lg bg-white pxs-2 shadow-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div></div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between py-1 border-b border-indigo-100">
+                        <span className="text-gray-600">Subtotal:</span>
+                        <span className="font-medium">{formatCurrency(selectedOrder.subtotal)}</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-indigo-100">
+                        <span className="text-gray-600">Delivery Charge:</span>
+                        <span className="font-medium">{formatCurrency(selectedOrder.deliveryCharge)}</span>
+                      </div>
+                      <div className="flex justify-between py-1 mt-1 bg-indigo-50 px-4 rounded-lg">
+                        <span className="font-bold text-indigo-800">Grand Total:</span>
+                        <span className="font-bold text-indigo-800">{formatCurrency(selectedOrder.grandTotal)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Footer */}
+            <div className="bg-gray-100 px-6 py-4 flex justify-end border-t">
+              <button
+                onClick={() => setDetailModalOpen(false)}
+                className="bg-green-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Edit Modal (Unchanged) */}
       {editModalOpen && selectedOrder && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
@@ -538,8 +613,6 @@ export default function ControlMangoOrders() {
                   'delivered',
                   'failed',
                   'rejected'
-
-
                 ].map((status) => (
                   <option key={status} value={status}>
                     {status.charAt(0).toUpperCase() + status.slice(1)}
