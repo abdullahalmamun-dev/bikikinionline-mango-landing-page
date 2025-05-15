@@ -10,9 +10,9 @@ import g6 from '../assets/images/6.jpg'
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="py-16 bg-gray-50">
+    <section id="gallery" className=" md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-5 md:mb-12 text-green-800">
           আমাদের আমের গ্যালারী
         </h2>
 

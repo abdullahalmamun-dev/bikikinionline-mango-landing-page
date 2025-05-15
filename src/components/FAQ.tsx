@@ -9,7 +9,7 @@ export default function FAQ() {
 
     {
       question: 'ডেলিভারি চার্জ কত?',
-      answer: 'ঢাকার ভেতরে ৮০ টাকা এবং ঢাকার বাইরে ১৫০ টাকা ডেলিভারি চার্জ। '
+      answer: 'ঢাকার ভেতরে ১০০ টাকা এবং ঢাকার বাইরে ১৫০ টাকা ডেলিভারি চার্জ। '
     },
     {
       question: 'রিফান্ড পলিসি কি?',
@@ -37,7 +37,7 @@ export default function FAQ() {
   ]
 
   return (
-    <section id="faq" className="py-16 bg-white">
+    <section id="faq" className="py-5 md:py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800">
           সচরাচর জিজ্ঞাস্য প্রশ্নাবলি

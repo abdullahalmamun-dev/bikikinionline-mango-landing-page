@@ -3,9 +3,9 @@
 
 export default function Features() {
   return (
-    <section id="features" className="py-16 bg-gray-50">
+    <section id="features" className=" md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800">
+        <h2 className="text-3xl md:text-4xl font-bold text-center md:mb-12 text-green-800">
           আমাদের বিশেষ সুবিধাসমূহ
         </h2>
 
@@ -16,8 +16,8 @@ export default function Features() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl text-green-800 font-semibold mb-2">সরাসরি কৃষক থেকে</h3>
-            <p className="text-gray-600">আমরা সরাসরি কৃষকের কাছ থেকে আম সংগ্রহ করি, কোন মধ্যস্বত্বভোগী নেই</p>
+            <h3 className="text-xl text-green-800 font-semibold mb-2">সরাসরি বাগান থেকে</h3>
+            <p className="text-gray-600">আমরা সরাসরি বাগান থেকে আম সংগ্রহ করি, কোন মধ্যস্বত্বভোগী নেই</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">

@@ -20,14 +20,7 @@ interface Order {
   orderNumber: string;
   customerName: string;
   phoneNumber: string;
-  address: {
-    house: string;
-    road?: string;
-    area: string;
-    policeStation: string;
-    district: string;
-    division: string;
-  };
+  address: string;
   deliveryArea: string;
   products: OrderProduct[];
   subtotal: number;
@@ -163,17 +156,7 @@ export default function ControlMangoOrders() {
       ...selectedOrder,
       products: updatedProducts
     });
-  };
-  
-  const formatAddress = (address: Order['address']): string => {
-    return [
-      address.house,
-      address.road,
-      `Area: ${address.area}`,
-      address.policeStation,
-      address.district,
-      address.division,
-    ].filter(Boolean).join(", ");
+    console.log(selectedOrder);
   };
 
   if (loading) return <div className="p-6">Loading orders...</div>;
@@ -343,7 +326,10 @@ export default function ControlMangoOrders() {
                   <div className="px-2 py-2">
                     <h3 className="text-md font-semibold text-green-800  border-b border-indigo-100">Delivery Address</h3>
                     <div className="bg-indigo-50 px-3 rounded-lg border border-indigo-100">
-                      <p className="text-gray-700">{formatAddress(selectedOrder.address)}</p>
+                      <p className="text-gray-700">
+                            {selectedOrder.address || 'Address not available'}
+
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -466,90 +452,16 @@ export default function ControlMangoOrders() {
               <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
-                  placeholder="House Number"
-                  value={selectedOrder.address.house}
+                  placeholder="Address"
+    value={selectedOrder.address || ''}
                   onChange={(e) => setSelectedOrder({
                     ...selectedOrder,
-                    address: {
-                      ...selectedOrder.address,
-                      house: e.target.value
-                    }
-                  })}
-                  className="p-2 border rounded"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Road (Optional)"
-                  value={selectedOrder.address.road || ''}
-                  onChange={(e) => setSelectedOrder({
-                    ...selectedOrder,
-                    address: {
-                      ...selectedOrder.address,
-                      road: e.target.value
-                    }
-                  })}
-                  className="p-2 border rounded"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <input
-                  type="text"
-                  placeholder="Area"
-                  value={selectedOrder.address.area}
-                  onChange={(e) => setSelectedOrder({
-                    ...selectedOrder,
-                    address: {
-                      ...selectedOrder.address,
-                      area: e.target.value
-                    }
-                  })}
-                  className="p-2 border rounded"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Police Station"
-                  value={selectedOrder.address.policeStation}
-                  onChange={(e) => setSelectedOrder({
-                    ...selectedOrder,
-                    address: {
-                      ...selectedOrder.address,
-                      policeStation: e.target.value
-                    }
-                  })}
-                  className="p-2 border rounded"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="District"
-                  value={selectedOrder.address.district}
-                  onChange={(e) => setSelectedOrder({
-                    ...selectedOrder,
-                    address: {
-                      ...selectedOrder.address,
-                      district: e.target.value
-                    }
+                    address: e.target.value
                   })}
                   className="p-2 border rounded"
                   required
                 />
               </div>
-              <input
-                type="text"
-                placeholder="Division"
-                value={selectedOrder.address.division}
-                onChange={(e) => setSelectedOrder({
-                  ...selectedOrder,
-                  address: {
-                    ...selectedOrder.address,
-                    division: e.target.value
-                  }
-                })}
-                className="p-2 border rounded"
-                required
-              />
             </div>
 
             {/* Products Section */}
@@ -612,7 +524,8 @@ export default function ControlMangoOrders() {
                   'delivering',
                   'delivered',
                   'failed',
-                  'rejected'
+                  'rejected',
+                  'hidden'
                 ].map((status) => (
                   <option key={status} value={status}>
                     {status.charAt(0).toUpperCase() + status.slice(1)}

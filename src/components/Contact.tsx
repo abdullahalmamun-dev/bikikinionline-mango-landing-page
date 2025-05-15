@@ -4,9 +4,9 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaClock, FaEnvelope, FaFacebook, FaWhatsapp
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-16 bg-gradient-to-b from-green-50 to-white">
+    <section id="contact" className="py-5 md:py-16 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-screen-xl mx-auto px-4 md:px-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-5 md:mb-12 text-green-800">
           যোগাযোগ করুন
         </h2>
 
@@ -68,53 +68,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-white p-8 rounded-xl shadow-lg">
-            <form className="space-y-6">
-              <div>
-                <label className="block text-gray-700 mb-2">আপনার নাম</label>
-                <input 
-                  type="text" 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="আপনার পূর্ণ নাম লিখুন"
-                />
-              </div>
 
-              <div>
-                <label className="block text-gray-700 mb-2">ইমেইল ঠিকানা</label>
-                <input 
-                  type="email" 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="you@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-2">ফোন নম্বর</label>
-                <input 
-                  type="tel" 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="০১৭XXXXXXXX"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-2">বার্তা</label>
-                <textarea 
-                  rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="আপনার বার্তাটি এখানে লিখুন..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold"
-              >
-                বার্তা পাঠান
-              </button>
-            </form>
-          </div>
         </div>
       </div>
     </section>

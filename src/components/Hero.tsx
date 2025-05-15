@@ -5,8 +5,8 @@ import mango from "../assets/hero.jpg"
 
 export default function Hero() {
   return (
-    <section className="py-16 bg-gradient-to-r from-yellow-50 to-yellow-100">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <section className="py-5 md:py-16 bg-gradient-to-r from-yellow-50 to-yellow-100">
+      <div className="container mx-auto px-4 md:grid flex flex-row-reverse  md:grid-cols-2 gap-8 items-center">
         <div>
           <h1 className="text-3xl text-center md:text-left md:text-5xl font-bold mb-6 text-green-800">
             বাংলাদেশের সেরা মিষ্টি আম!
@@ -43,7 +43,7 @@ export default function Hero() {
               </li>
             </ul>
           </div>
-          <p className="text-lg mb-8 text-gray-600">
+          <p className="text-lg mb-4 md:mb-8 text-gray-600">
             <span className="font-bold text-green-600">২০,০০০+</span> গ্রাহকের কাছে আমরা আমাদের আম পৌঁছে দিয়েছি!
           </p>
 <div className='md:block flex justify-center'>
